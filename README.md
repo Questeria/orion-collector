@@ -104,7 +104,7 @@ source venv/bin/activate  # Linux/Mac
 # or: .\venv\Scripts\Activate.ps1  # Windows
 
 # Install dependencies
-pip install websockets aiohttp pyyaml prometheus_client
+pip install websockets aiohttp pyyaml prometheus_client requests cryptography
 pip install orjson  # Recommended — 5x faster JSON serialization
 
 # Configure credentials
