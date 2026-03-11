@@ -1,0 +1,183 @@
+# Orion Collector v7.8 Configuration
+# -----------------------------------
+# All tunable constants. Loaded at startup; defaults used if missing.
+# Edit this file instead of editing orion_collector.py source code.
+
+# Rotation policy
+rotation:
+  every_hour: true         # Rotate tapes on the hour boundary
+  at_mb: 200               # Also rotate if tape exceeds this size (MB)
+
+# Flush policy
+flush:
+  every_lines: 500         # Flush OS buffer every N lines written
+  every_seconds: 1.0       # OR flush every N seconds (whichever comes first)
+
+# WebSocket keepalive
+websocket:
+  kalshi_receive_timeout: 30   # Reconnect if no Kalshi data for N seconds
+  coinbase_ping_interval: 20   # Ping Coinbase every N seconds
+  coinbase_ping_timeout: 10    # Coinbase ping response timeout
+  compression: deflate         # "deflate" for RFC 7692, "none" to disable
+
+# REST snapshot scheduling (seconds after :00/:15/:30/:45 settlement)
+snapshots:
+  window_start_s: 30       # Start fetching snapshots N seconds after settlement
+  window_end_s: 150         # Stop fetching by N seconds after settlement
+  concurrency: 10           # Concurrent aiohttp requests per batch
+  rate_limit_ms: 100        # ms between sequential REST requests (sync fallback)
+
+# Market rediscovery
+rediscovery:
+  offset_s: 15              # Run rediscovery N seconds after settlement (before snapshots)
+
+# Predictive 15M subscription
+predictor:
+  lead_s: 45                # Pre-subscribe N seconds before window opens
+  check_s: 10               # Check for upcoming windows every N seconds
+  symbols:                  # Always predict these symbols
+    - BTC
+    - ETH
+    - SOL
+    - XRP
+
+# Archive retention
+retention:
+  days: 90                  # Delete archives older than N days
+  cleanup_hours: 6          # Run cleanup check every N hours
+
+# Default symbols (when no --symbols argument provided)
+default_symbols:
+  - BTC
+  - ETH
+  - SOL
+  - XRP
+  - DOGE
+  - SHIB
+
+# v7.6: Startup tape integrity audit
+startup:
+  audit_records: 50         # Number of tape records to validate on startup
+
+# v7.6: Disk space monitoring (tiered alerts + pause/resume)
+disk:
+  warning_gb: 5.0           # Log warning when free space drops below this
+  critical_gb: 1.0          # Log CRITICAL + aggressive retention
+  pause_gb: 0.5             # PAUSE writes + emergency retention
+  pause_buffer_max: 10000   # Max messages to buffer in memory during pause
+
+# v7.6: Per-feed health metrics
+health:
+  feed_silent_threshold_s: 60   # Alert if a product is silent for this long
+
+# v7.6: Backpressure queue (decouples WS recv from disk I/O)
+backpressure:
+  queue_size: 50000         # Max messages in backpressure queue
+
+# v7.6: Structured JSON logging
+logging:
+  structured_enabled: true  # Write machine-readable JSON log alongside text log
+  structured_max_mb: 100    # Max size per structured log file (MB)
+
+# v7.6: Watchdog (for collector_watchdog.py)
+watchdog:
+  tape_stale_s: 120         # Restart collector if tape older than this
+  health_check_s: 15        # Check tape freshness every N seconds
+  max_backoff_s: 300        # Max seconds between restart attempts
+  initial_backoff_s: 5      # First restart delay
+
+# v7.7: Exchange sequence gap detection thresholds
+gaps:
+  cb_threshold: 5000        # Coinbase gap threshold (orderbook-wide seq)
+  kl_threshold: 1           # Kalshi gap threshold (per-channel seq)
+
+# v7.7: Prometheus metrics endpoint (for Grafana dashboards)
+metrics:
+  enabled: true             # Start HTTP metrics server on startup
+  port: 9090                # Port for /metrics endpoint
+
+# v8.3: Email alert system
+# Sends email alerts when the collector encounters problems.
+# Requires a Gmail App Password in api.env: GMAIL_APP_PASSWORD=abcdefghijklmnop
+# Get one at: https://myaccount.google.com/apppasswords (needs 2FA enabled)
+alerts:
+  enabled: true               # Master switch — set false to disable all alerts
+  check_interval_s: 10        # How often to check conditions (seconds)
+  cooldown_minutes: 30        # Min minutes between repeat alerts of same type
+  send_recovery: true         # Send a "RESOLVED" email when conditions clear
+  recipient: "your-email@example.com"
+  sender: "your-email@example.com"
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+
+  conditions:
+    data_stopped:
+      enabled: true           # Alert when no data is flowing
+      tape_age_threshold_s: 60  # Trigger if unified tape is older than N seconds
+
+    collector_down:
+      enabled: true           # Alert when Prometheus endpoint is unreachable
+      consecutive_failures: 5  # Must fail N times in a row before alerting
+
+    ws_disconnect:
+      enabled: true           # Alert when WebSocket connections drop
+      uptime_threshold_s: 120  # Trigger if connection uptime < N seconds
+
+    disk_critical:
+      enabled: true           # Alert when disk space is dangerously low
+      threshold_gb: 5.0       # Trigger when free space falls below N GB
+
+    high_error_rate:
+      enabled: true           # Alert when too many errors in the log
+      errors_per_minute: 10   # Trigger threshold (errors per minute)
+      consecutive_minutes: 2  # Must exceed threshold for N consecutive minutes
+
+# v8.5: Composite Health Score (0-100 number like a credit score for system health)
+# Combines all metrics into a single glanceable number, updated every 2 seconds.
+health_score:
+  weights:
+    freshness: 30       # % weight — are all data feeds fresh?
+    rate: 20            # % weight — is data flowing at normal rates?
+    stability: 20       # % weight — any recent reconnects or gaps?
+    latency: 15         # % weight — are latencies acceptable?
+    resources: 15       # % weight — disk space + queue depth
+  thresholds:
+    freshness_good_s: 5     # Tape age for score=100
+    freshness_bad_s: 60     # Tape age for score=0
+    rate_good: 50           # Events/s for score=100
+    rate_bad: 0             # Events/s for score=0
+    reconnect_window_m: 30  # Rolling window (minutes) for reconnect counting
+    reconnect_good: 0       # Reconnects in window for score=100
+    reconnect_bad: 5        # Reconnects in window for score=0
+    p95_good_ms: 100        # p95 latency for score=100
+    p95_bad_ms: 1000        # p95 latency for score=0
+    disk_good_gb: 20        # Disk space for score=100
+    disk_bad_gb: 2          # Disk space for score=0
+    queue_good: 0           # Queue depth for score=100
+    queue_bad: 5000         # Queue depth for score=0
+
+# v8.5: SLA Tracking (uptime %, MTTR, incident history)
+# Tracks when the system is "down" and computes availability metrics.
+sla:
+  enabled: true
+  incident_threshold_s: 30   # Tape age beyond this = system is "down"
+  rate_zero_grace_s: 10      # Rate=0 must last this long before counting as incident
+  retention_days: 30         # Keep incident history for N days
+  save_interval_s: 60        # Persist SLA state to disk every N seconds
+
+# v8.5: Anomaly Detection (auto-learns normal, flags outliers via z-score)
+# Maintains a rolling window of recent values for each metric and flags
+# any reading that deviates more than N standard deviations from the mean.
+anomaly:
+  enabled: true
+  window_entries: 900        # Rolling window size (900 entries at 2s = 30 min)
+  min_baseline: 60           # Need at least this many entries before detection starts
+  alert_z: 3.0               # Z-score threshold for alert severity
+  warn_z: 2.0                # Z-score threshold for warning severity
+  tracked_metrics:           # Which history entry fields to monitor
+    - rate
+    - p95
+    - queue
+    - cbRate
+    - klRate
+    - unified_age
