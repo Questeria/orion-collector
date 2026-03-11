@@ -1,0 +1,18 @@
+# Credentials — never commit these
+api.env
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+
+# Collector data
+data/
+logs/
+state/
+
+# OS files
+.DS_Store
+Thumbs.db
