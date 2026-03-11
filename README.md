@@ -10,13 +10,13 @@ A unified WebSocket collector that ingests real-time market data from two exchan
 
 ## Screenshots
 
-### Dashboard — Dark Theme
-![Dashboard Dark](screenshots/dashboard-dark.png)
-
 ### Dashboard — Light Theme
 ![Dashboard Light](screenshots/dashboard-light.png)
 
-### Deep Dive — Feed Health, Tape Status, Disk Monitor, Gap Detector, Alert History
+### Dashboard — Dark Theme
+![Dashboard Dark](screenshots/dashboard-dark.png)
+
+### Deep Dive — Midnight Blue Theme (Feed Health, Tape Status, Disk Monitor, Gap Detector, Alert History, System Vitals)
 ![Deep Dive](screenshots/deep-dive.png)
 
 ### Event Rate Chart with Metric Overlays
@@ -34,8 +34,8 @@ A unified WebSocket collector that ingests real-time market data from two exchan
 ### Uptime Details — SLA Tracking
 ![Uptime Details](screenshots/uptime-details.png)
 
-### Terminal Green Theme — Monitor View
-![Terminal Green Monitor](screenshots/terminal-green-monitor.png)
+### Solarized Theme — Monitor View
+![Solarized Monitor](screenshots/terminal-green-monitor.png)
 
 ### Terminal Green Theme — Deep Dive
 ![Terminal Green Deep Dive](screenshots/terminal-green-deep-dive.png)
