@@ -155,10 +155,10 @@ All settings live in `collector_config.yaml`:
 | `collector_dashboard.jsx` | 4,976 | 268 KB | React monitoring dashboard frontend |
 | `collector_dashboard.py` | 2,758 | 120 KB | Dashboard backend + SLA + anomaly detection |
 | `health_check.py` | 310 | 12 KB | Tape health monitor with CRC verification |
-| `collector_watchdog.py` | 241 | 12 KB | Process supervisor with exponential backoff |
+| `collector_watchdog.py` | 243 | 12 KB | Process supervisor with exponential backoff |
 | `singleton_lock.py` | 185 | 8 KB | Cross-platform duplicate instance prevention |
 | `collector_config.yaml` | 183 | 8 KB | All tunable constants |
-| **Total** | **12,019** | **584 KB** | |
+| **Total** | **12,021** | **584 KB** | |
 
 ## Design Decisions
 
