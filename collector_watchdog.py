@@ -38,9 +38,11 @@ WATCHDOG_LOG = LOG_DIR / "collector_watchdog.log"
 # Singleton lock — prevents duplicate watchdog instances
 from singleton_lock import acquire_singleton_lock, release_singleton_lock
 
-# Find the venv Python — same as start_collectors.ps1 logic
-VENV_PYTHON = PROJECT_ROOT / "venv" / "Scripts" / "python.exe"
-PYTHON_EXE = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
+# Find the venv Python — checks Windows then Linux venv paths, falls back to
+# whatever Python is currently running this script (handles activated venvs).
+_VENV_WIN = PROJECT_ROOT / "venv" / "Scripts" / "python.exe"
+_VENV_NIX = PROJECT_ROOT / "venv" / "bin" / "python"
+PYTHON_EXE = str(_VENV_WIN) if _VENV_WIN.exists() else str(_VENV_NIX) if _VENV_NIX.exists() else sys.executable
 
 # ── Config (load from collector_config.yaml if available) ──
 _CFG = {}
