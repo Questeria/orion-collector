@@ -6,7 +6,7 @@ A production market data collection system for Kalshi prediction markets and Coi
 
 A unified WebSocket collector that ingests real-time market data from two exchanges simultaneously, writes it to a structured tape format with integrity guarantees, and exposes a full monitoring stack — all in one self-contained system.
 
-**12,000+ lines** across 7 files. No external monitoring tools required (no Grafana, no Datadog, no PagerDuty). Everything is built in.
+**13,000+ lines** across 14 files, with a 75-test pytest suite. No external monitoring tools required (no Grafana, no Datadog, no PagerDuty). Everything is built in.
 
 ## Architecture
 
@@ -147,6 +147,17 @@ All settings live in `collector_config.yaml`:
 - **sla** — Incident detection and tracking parameters
 - **anomaly** — Z-score thresholds and tracked metrics
 
+## Testing
+
+75 tests across 6 test files covering all major components. Run with:
+
+```bash
+pip install pytest
+python -m pytest tests/ -v
+```
+
+Test coverage includes CRC32 integrity verification, tape record format validation, sequence gap detection, health check status logic, composite health scoring, Prometheus metric parsing, anomaly detection, singleton lock lifecycle, settlement timing, and ticker prediction.
+
 ## File Inventory
 
 | File | Lines | Size | Description |
@@ -158,7 +169,13 @@ All settings live in `collector_config.yaml`:
 | `collector_watchdog.py` | 243 | 12 KB | Process supervisor with exponential backoff |
 | `singleton_lock.py` | 185 | 8 KB | Cross-platform duplicate instance prevention |
 | `collector_config.yaml` | 183 | 8 KB | All tunable constants |
-| **Total** | **12,021** | **584 KB** | |
+| `tests/conftest.py` | 178 | 6 KB | Shared fixtures and tape record builders |
+| `tests/test_tape_integrity.py` | 250 | 11 KB | CRC32, record format, sequencing tests |
+| `tests/test_dashboard.py` | 288 | 12 KB | Health score, Prometheus, anomaly tests |
+| `tests/test_health_check.py` | 216 | 9 KB | Tape health and CRC verification tests |
+| `tests/test_collector.py` | 205 | 9 KB | Settlement timing and config tests |
+| `tests/test_singleton_lock.py` | 158 | 7 KB | Lock lifecycle and PID detection tests |
+| **Total** | **13,316** | **631 KB** | **75 tests passing** |
 
 ## Design Decisions
 
