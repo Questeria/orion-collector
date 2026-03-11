@@ -8,6 +8,41 @@ A unified WebSocket collector that ingests real-time market data from two exchan
 
 **13,000+ lines** across 14 files, with a 75-test pytest suite. No external monitoring tools required (no Grafana, no Datadog, no PagerDuty). Everything is built in.
 
+## Screenshots
+
+### Dashboard — Dark Theme
+![Dashboard Dark](screenshots/dashboard-dark.png)
+
+### Dashboard — Light Theme
+![Dashboard Light](screenshots/dashboard-light.png)
+
+### Deep Dive — Feed Health, Tape Status, Disk Monitor, Gap Detector, Alert History
+![Deep Dive](screenshots/deep-dive.png)
+
+### Event Rate Chart with Metric Overlays
+![Event Rate Overlays](screenshots/event-rate-overlays.png)
+
+### Event Inspector — Raw Tape Data
+![Event Inspector](screenshots/event-inspector.png)
+
+### Latency Percentiles — p50 / p95 / p99
+![Latency Panel](screenshots/latency-panel.png)
+
+### Health Score Breakdown — 5 Weighted Components
+![Health Score](screenshots/health-score-breakdown.png)
+
+### Uptime Details — SLA Tracking
+![Uptime Details](screenshots/uptime-details.png)
+
+### Terminal Green Theme — Monitor View
+![Terminal Green Monitor](screenshots/terminal-green-monitor.png)
+
+### Terminal Green Theme — Deep Dive
+![Terminal Green Deep Dive](screenshots/terminal-green-deep-dive.png)
+
+### Archive Browser, Log Viewer, Config Editor
+![Archive Logs Config](screenshots/archive-logs-config.png)
+
 ## Architecture
 
 ```
