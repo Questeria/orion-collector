@@ -29,8 +29,8 @@ from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 # ── Paths ──
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-COLLECTOR_SCRIPT = PROJECT_ROOT / "collectors" / "orion_collector.py"
+PROJECT_ROOT = Path(__file__).resolve().parent
+COLLECTOR_SCRIPT = PROJECT_ROOT / "orion_collector.py"
 UNIFIED_TAPE = PROJECT_ROOT / "data" / "unified" / "raw_tape" / "unified_tape.jsonl"
 LOG_DIR = PROJECT_ROOT / "logs"
 WATCHDOG_LOG = LOG_DIR / "collector_watchdog.log"
@@ -46,7 +46,7 @@ PYTHON_EXE = str(VENV_PYTHON) if VENV_PYTHON.exists() else sys.executable
 _CFG = {}
 try:
     import yaml
-    _cfg_path = PROJECT_ROOT / "collectors" / "collector_config.yaml"
+    _cfg_path = PROJECT_ROOT / "collector_config.yaml"
     if _cfg_path.exists():
         with open(_cfg_path, "r") as f:
             _CFG = yaml.safe_load(f) or {}

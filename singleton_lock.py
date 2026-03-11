@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import Optional
 
 # ── State directory for PID files ──
-STATE_DIR = Path(__file__).resolve().parent.parent / "state"
+STATE_DIR = Path(__file__).resolve().parent / "state"
 
 
 def _is_process_alive(pid: int) -> bool:

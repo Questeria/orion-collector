@@ -42,8 +42,8 @@ from singleton_lock import acquire_singleton_lock, release_singleton_lock, get_p
 # ══════════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════════
-SCRIPT_DIR = Path(__file__).resolve().parent          # collectors/
-PROJECT_DIR = SCRIPT_DIR.parent                        # Orion1/
+SCRIPT_DIR = Path(__file__).resolve().parent          # project root
+PROJECT_DIR = SCRIPT_DIR                               # same as SCRIPT_DIR in flat layout
 JSX_FILENAME = "collector_dashboard.jsx"
 DATA_DIR = Path(os.getenv("ORION_DATA_DIR", PROJECT_DIR / "data"))
 LOG_FILE = PROJECT_DIR / "logs" / "orion_collector.log"

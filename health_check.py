@@ -24,8 +24,8 @@ import time
 import zlib
 from pathlib import Path
 
-# Use ORION_DATA_DIR env var if set, otherwise default to ../data relative to this script
-DATA_DIR       = Path(os.environ.get("ORION_DATA_DIR", Path(__file__).resolve().parent.parent / "data"))
+# Use ORION_DATA_DIR env var if set, otherwise default to ./data relative to this script
+DATA_DIR       = Path(os.environ.get("ORION_DATA_DIR", Path(__file__).resolve().parent / "data"))
 KALSHI_TAPE    = DATA_DIR / "kalshi" / "raw_tape" / "kalshi_tape.jsonl"
 ORACLE_TAPE    = DATA_DIR / "oracle" / "raw_tape" / "oracle_tape.jsonl"
 UNIFIED_TAPE   = DATA_DIR / "unified" / "raw_tape" / "unified_tape.jsonl"
