@@ -37,7 +37,7 @@ A unified WebSocket collector that ingests real-time market data from two exchan
 ### Solarized Theme — Monitor View
 ![Solarized Monitor](screenshots/terminal-green-monitor.png)
 
-### Terminal Green Theme — Deep Dive
+### Terminal Theme — Deep Dive
 ![Terminal Green Deep Dive](screenshots/terminal-green-deep-dive.png)
 
 ### Archive Browser, Log Viewer, Config Editor
